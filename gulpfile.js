@@ -10,6 +10,7 @@ var del = require('del');
 var gulpif = require('gulp-if');
 var minifycss = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
+var babel = require("gulp-babel");
 
 
 //project path
@@ -17,10 +18,10 @@ var des = './wedding/static';
 
 //get static path
 gulp.task('variable',function(){
-   //js path
-    jsPath = ['./wedding/html/js/*.js'];
-    sassPath = ['./wedding/html/sass/*.scss'];
-    imagePath = ['./wedding/html/images/*.*'];
+    //source path
+    jsPath = ['./wedding/js/*.js'];
+    sassPath = ['./wedding/sass/*.scss'];
+    imagePath = ['./wedding/images/*.*'];
     return true;
 });
 
@@ -33,11 +34,11 @@ gulp.task('clean',function(cb){
 
 //gulp css
 gulp.task('css',function(){
-    return gulp.src('./wedding/html/scss/app.scss')
+    return gulp.src('./wedding/scss/app.scss')
         .pipe(sass({errLogToConsole:true}))
         .pipe(gulpif(des === './wedding/dist',minifycss({advanced:false})))
         .pipe(concat('app.css'))
-        .pipe(gulp.dest(des + '.css'));
+        .pipe(gulp.dest(des + '/css/'));
 });
 //gulp js
 gulp.task('js',function(){
@@ -52,11 +53,25 @@ gulp.task('js',function(){
         })
     )
         .pipe(gulpif(des === './dist', uglify()))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
         .pipe(gulp.dest(des + '/js'))
+});
+//copy html
+gulp.task('html', function() {
+    return gulp.src('./wedding/*.html')
+        .pipe(gulp.dest(des));
+});
+
+//copy images
+gulp.task('img', function() {
+    return gulp.src('./wedding/images/*.*')
+        .pipe(gulp.dest(des+'/images/'));
 });
 
 //default task
 gulp.task('default',function(cb){
     des = './static';
-    runSequence('variable','clean',['css','js'],cb);
+    runSequence('variable','clean',['css','js','html','img'],cb);
 });
