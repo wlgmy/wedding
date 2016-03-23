@@ -4,34 +4,84 @@ body{
   background:#FFF;
   border:none;
 }
+
+#mc-control {
+  width: 60px;
+  height: 60px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  z-index: 9999;
+  position: absolute;
+  top:20px;
+  right: 20px;
+}
+
+//music
+@-webkit-keyframes rotate{
+
+  from{-webkit-transform:rotate(0deg)}
+  to{-webkit-transform:rotate(360deg)}
+}
+@-moz-keyframes rotate{
+  from{-moz-transform:rotate(0deg)}
+  to{-moz-transform:rotate(360deg)}
+}
+@-ms-keyframes rotate{
+  from{-ms-transform:rotate(0deg)}
+  to{-ms-transform:rotate(360deg)}
+}
+@-o-keyframes rotate{
+  from{-o-transform:rotate(0deg)}
+  to{-o-transform:rotate(360deg)}
+}
+
+
+.music_on{
+  background-image: url('../src/mc_on.png');
+  animation: 9.5s linear 0s normal none infinite rotate;
+  -webkit-animation:9.5s linear 0s normal none infinite rotate;
+}
+
+.music_off{
+  background-image: url('../src/mc_off.png');
+  animation-play-state:paused;
+  -webkit-animation-play-state:paused;
+}
+
 .content{
   width: 100%;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  top: 0px;
 }
-
-.part{
+.parts {
   width: 100%;
-  overflow: hidden;
-  img{
-    min-width: 100%;
-    min-height:100%;
+  .part{
+    width: 100%;
+    overflow: hidden;
+    img{
+      min-width: 100%;
+      min-height:100%;
+    }
   }
+
 }
 
+//shadow and loding
 .shadow{
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom:0;
   right:0;
-  background: rgba(200,200,200,0.5);
+  background: rgba(200,200,200,0.9);
   z-index: 999;
   .spinner {
     margin: 100px auto;
     width: 60px;
     height: 60px;
-    position: relative;
     z-index: 1000;
+    position: fixed;
   }
 
   .container1 > div, .container2 > div, .container3 > div {

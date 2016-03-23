@@ -70,8 +70,14 @@ gulp.task('img', function() {
         .pipe(gulp.dest(des+'/images/'));
 });
 
+//copy files
+gulp.task('src', function() {
+    return gulp.src('./wedding/src/*.*')
+        .pipe(gulp.dest(des+'/src/'));
+});
+
 //default task
 gulp.task('default',function(cb){
     des = './static';
-    runSequence('variable','clean',['css','js','html','img'],cb);
+    runSequence('variable','clean',['css','js','html','img','src'],cb);
 });
