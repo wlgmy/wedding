@@ -1,8 +1,10 @@
-import TouchSlide from 'Touch';
+//import {TouchSlide} from './Touch';
+//var TouchSlide = require('./Touch');
 
 //complete image count
 let imageNums =0;
 //all image count
+
 const ALLIMAGE = document.querySelectorAll(".image").length;
 //get client width and height
 const WIDTH = window.screen.width;

@@ -11,6 +11,7 @@ var gulpif = require('gulp-if');
 var minifycss = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
 var babel = require("gulp-babel");
+var watcg = require("gulp-watch");
 
 
 //project path
@@ -22,6 +23,7 @@ gulp.task('variable',function(){
     jsPath = ['./wedding/js/*.js'];
     sassPath = ['./wedding/sass/*.scss'];
     imagePath = ['./wedding/images/*.*'];
+    srcPath = ['./wedding/src/*.*'];
     return true;
 });
 
@@ -49,7 +51,24 @@ gulp.task('js',function(){
             },
             output:{
                 filename: 'app.js'
-            }
+            },
+            module: {
+                loaders:[{
+                    test: './wedding/js/',
+                    loader: 'babel-loader',
+                    /*exclude: /(node_modules)/,
+                    loader: "babel-loader",*/
+                    /*query: {
+                        optional: ['runtime']
+                    }*/
+                }]
+            }/*,
+            plugins:[
+                new webpack.ProvidePlugin({
+                    TouchSlide:'./wedding/js/Touch'
+                }),
+                new webpack.optimize.CommonsChunkPlugin("touch", "touch.js")
+            ]*/
         })
     )
         .pipe(gulpif(des === './dist', uglify()))
@@ -58,6 +77,7 @@ gulp.task('js',function(){
         }))
         .pipe(gulp.dest(des + '/js'))
 });
+
 //copy html
 gulp.task('html', function() {
     return gulp.src('./wedding/*.html')
@@ -76,8 +96,28 @@ gulp.task('src', function() {
         .pipe(gulp.dest(des+'/src/'));
 });
 
+//copy Touch
+gulp.task('touch',function(){
+    return gulp.src('./wedding/js/Touch.js')
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(gulp.dest(des+'/js/'));
+});
+
+//gulp watch
+gulp.task('watch', function() {
+    gulp.watch('*.html', ['html']);
+    gulp.watch(sassPath, ['css']);
+    gulp.watch(jsPath, ['js','touch']);
+    gulp.watch(imagePath,['img']);
+
+    gulp.watch(srcPath, ['src']);
+});
+
+
 //default task
 gulp.task('default',function(cb){
     des = './static';
-    runSequence('variable','clean',['css','js','html','img','src'],cb);
+    runSequence('variable','clean',['css','js','html','img','src','touch'],'watch',cb);
 });
