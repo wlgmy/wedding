@@ -49,7 +49,8 @@ gulp.task('js',function(){
             },
             output:{
                 filename: 'app.js'
-            }
+            },
+            
         })
     )
         .pipe(gulpif(des === './dist', uglify()))

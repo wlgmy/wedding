@@ -27,10 +27,13 @@
     "type": "git",
     "url": "git+https://github.com/wlgmy/wedding.git"
   },
-  "author": "",
+  "author": "wanglong",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/wlgmy/wedding/issues"
   },
-  "homepage": "https://github.com/wlgmy/wedding#readme"
+  "homepage": "https://github.com/wlgmy/wedding#readme",
+  "keywords": [
+    "1.0.0"
+  ]
 }

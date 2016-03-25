@@ -1,4 +1,4 @@
-import TouchSlide from 'Touch';
+var TouchSlide =  require('./Touch');
 
 //complete image count
 let imageNums =0;
