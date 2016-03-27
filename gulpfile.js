@@ -98,7 +98,7 @@ gulp.task('src', function() {
 
 //copy Touch
 gulp.task('touch',function(){
-    return gulp.src('./wedding/js/Touch.js')
+    return gulp.src('./wedding/js/TouchSlide.1.1.js')
         .pipe(babel({
             presets: ['es2015']
         }))

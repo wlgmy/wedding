@@ -27,6 +27,7 @@ var TouchSlide = function(a){
     var startY = 0;
     var distY = 0;
     var endY = 0;
+    var scrollY = 0;
     var isTouchPad = (/hp-tablet/gi).test(navigator.appVersion);
     var hasTouch = 'ontouchstart' in window && !isTouchPad;
     //TODO
@@ -54,6 +55,9 @@ var TouchSlide = function(a){
     var tEnd = function(e){
         if(distY==0) return;
         e.preventDefault();
+        console.log("maincell",mainCellHeight);
+        console.log("slideCell",scrollHeight);
+
         console.log("touch end",distY);
 
         mainCell.removeEventListener(touchMove, tMove, false);
@@ -61,21 +65,26 @@ var TouchSlide = function(a){
 
         var scrollHeight;
         var scrollTop = mainCell.scrollTop;
-        var restScroll = scrollTop % mainCellHeight;
-        console.log("resrSrocll",restScroll);
+        console.log("scrollTop",scrollTop);
+        var scrollDis = scrollTop - scrollY;
+
+        console.log("scrollDis",scrollDis);
+
+        //console.log("restSrocll",restScroll);
         if(distY < 0){
             if(scrollTop >= slideCellHeight){
                 scrollHeight = scrollTop - slideCellHeight;
             }else{
-                scrollHeight = restScroll - mainCellHeight;
+                scrollHeight = scrollDis - mainCellHeight;
             }
         }else{
             if(scrollTop <= 0){
                 scrollHeight = 0 - scrollTop;
             }else{
-                scrollHeight = restScroll;
+                scrollHeight = mainCellHeight + scrollDis;
             }
         }
+        //console.log("scrollY",scrollTop - scrollY);
         console.log("scrollheigt",scrollHeight);
 
         slideCell.style.webkitTransform = "translate(0px," + scrollHeight +"px)";
@@ -89,6 +98,7 @@ var TouchSlide = function(a){
         distY = 0;
         var point = hasTouch ? e.targetTouches[0] : e;
         startY = point.pageY;
+        scrollY = mainCell.scrollTop;
 
         console.log("touch start");
 
