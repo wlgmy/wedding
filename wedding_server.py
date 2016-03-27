@@ -6,6 +6,7 @@ import tornado.web
 import pymongo as mo
 import logging,signal
 import time,os
+from bson import ObjectId
 
 from tornado.options import define, options
 
@@ -77,10 +78,17 @@ class IndexHandler(tornado.web.RequestHandler):
             num = db['wedding_test'].find({'name':name,'tel':tel}).count()
             logging.info('name = '+str(name)+'has '+str(num)+' records')
             if(num == 0):
-                log = db['wedding_test'].insert({'name':name,'tel':tel,'person':person,'context':context,'place':place})
+                Id = db['wedding_test'].insert({'name':name,'tel':tel,'person':person,'context':context,'place':place})
+                insertNum = db['wedding_test'].find({'_id':ObjectId(Id)}).count()
+                logging.info('insertId:'+str(Id))
+                if(insertNum == 0):
+                    ret['code'] = 2
+                    ret['message'] = 'insert error'
             else:
-                log = db['wedding_test'].update({'name':name,'tel':tel},{'person':person,'context':context,'place':place})
-            logging.info(log)
+                log = db['wedding_test'].update({'name':name,'tel':tel},{'name':name,'tel':tel,'person':person,'context':context,'place':place})
+                if(log['updatedExisting'] == False):
+                    ret['code'] = 3
+                    ret['message'] = 'update error!'
         retStr = json.dumps(ret,ensure_ascii=False)
         self.write(retStr)
 
