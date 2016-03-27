@@ -44,34 +44,7 @@ gulp.task('css',function(){
 });
 //gulp js
 gulp.task('js',function(){
-    return gulp.src('./wedding/js/app.js')
-        .pipe(gulpWebpack({
-            entry:{
-                app:'./wedding/js/app.js'
-            },
-            output:{
-                filename: 'app.js'
-            },
-            module: {
-                loaders:[{
-                    test: './wedding/js/',
-                    loader: 'babel-loader',
-                    /*exclude: /(node_modules)/,
-                    loader: "babel-loader",*/
-                    /*query: {
-                        optional: ['runtime']
-                    }*/
-                }]
-            }/*,
-            plugins:[
-                new webpack.ProvidePlugin({
-                    TouchSlide:'./wedding/js/Touch'
-                }),
-                new webpack.optimize.CommonsChunkPlugin("touch", "touch.js")
-            ]*/
-        })
-    )
-        .pipe(gulpif(des === './dist', uglify()))
+    return gulp.src('./wedding/js/*.*')
         .pipe(babel({
             presets: ['es2015']
         }))
